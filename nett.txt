@@ -610,3 +610,123 @@ SetTempData.cshtml<h2>TempData Saved!</h2>
 GetTempData.cshtml<h2>TempData: @TempData["Msg"]</h2>
 
 <p>Refresh the page to see it disappear!</p>
+# =====================================================================
+#  EF Core & CRUD Operations (Scaffolding)
+# =====================================================================
+Part A: Setting Up Database & Migrations
+Steps to Do It:
+Create an ASP.NET Core Web Application (MVC) named EFCoreDemo.
+Open Package Manager Console (Tools -> NuGet Package Manager -> Package Manager Console) and install EF Core packages:
+
+Install-Package Microsoft.EntityFrameworkCore -Version 3.0.0
+
+Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 3.0.0
+
+Install-Package Microsoft.EntityFrameworkCore.Tools -Version 3.0.0
+
+Install-Package Microsoft.EntityFrameworkCore.Design -Version 3.0.0
+
+Create Model: Right-click Models -> Add -> Class -> Student.cs.
+Create DbContext: Create a folder Data -> Right-click Data -> Add -> Class -> AppDbContext.cs.
+Add Connection String: Edit appsettings.json.
+Register DbContext: Edit Startup.cs.
+Run Migrations: In Package Manager Console, run:
+
+Add-Migration InitialCreate
+
+Update-Database
+Code:
+1. Models/Student.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace EFCoreDemo.Models
+
+{
+
+    public class Student
+
+    {
+
+        [Key]
+
+        public int Id { get; set; }
+
+        [Required, StringLength(50)]
+
+        public string Name { get; set; }
+
+        [Range(18, 60)]
+
+        public int Age { get; set; }
+
+    }
+
+}
+2. Data/AppDbContext.cs
+using Microsoft.EntityFrameworkCore;
+
+using EFCoreDemo.Models;
+
+namespace EFCoreDemo.Data
+
+{
+
+    public class AppDbContext : DbContext
+
+    {
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        public DbSet<Student> Students { get; set; }
+
+    }
+
+}
+3. appsettings.json
+{
+
+  "ConnectionStrings": {
+
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=EFCoreDemoDB;Trusted_Connection=True;"
+
+  },
+
+  "AllowedHosts": "*"
+
+}
+4. Startup.cs (Inside ConfigureServices)
+public void ConfigureServices(IServiceCollection services)
+
+{
+
+    services.AddDbContext<AppDbContext>(options =>
+
+        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+    services.AddControllersWithViews();
+
+}
+
+Or in program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+// --- ADD YOUR DATABASE SERVICE HERE ---
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+Part B: Auto-Generating CRUD Operations (Scaffolding)
+(Visual Studio generates this code automatically.)
+Steps to Do It:
+Right-click the Controllers folder -> Add -> New Scaffolded Item...
+Select MVC Controller with views, using Entity Framework -> Click Add.
+Fill in the dialog box:
+Model class: Student (EFCoreDemo.Models)
+Data context class: AppDbContext (EFCoreDemo.Data)
+Controller name: StudentsController
+Click Add (Visual Studio will generate StudentsController.cs and all Create, Edit, Details, Delete, and Index views).
+Run the project and navigate to https://localhost:xxxx/Students in your browser to test Create, Read, Update, and Delete!
+
