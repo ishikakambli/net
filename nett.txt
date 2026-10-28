@@ -1,5 +1,7 @@
-#console
+# =====================================================================
+##console
 #even odd
+# =====================================================================
 using System; 
 namespace p1even_odd 
 { 
@@ -21,3 +23,490 @@ Console.WriteLine("The number is odd.");
 } 
 } 
 } 
+# =====================================================================
+#console temperature converter
+# =====================================================================
+using System; 
+namespace p1even_odd 
+{ 
+class Program 
+{ 
+static void Main(string[] args) 
+{ 
+int celsius = 0; 
+Console.WriteLine("Enter the temperature (Celsius) :"); celsius = Convert.ToInt32(Console.ReadLine()); 
+int convert_c = (celsius * 9 / 5) + 32; 
+Console.WriteLine("Temperature in Fahernheit : " +convert_c); 
+int fahrenheit = 0; 
+Console.WriteLine("Enter the temperature (Celsius) :"); celsius = Convert.ToInt32(Console.ReadLine()); 
+int convert_f = (fahrenheit - 32) *5/9; 
+Console.WriteLine("Temperature in Celsius : " + convert_f);
+} 
+} 
+} 
+# =====================================================================
+#console CALCULATOR 
+# =====================================================================
+using System; 
+namespace p1even_odd 
+{ 
+class Program 
+{ 
+static void Main(string[] args) 
+{ 
+int num1 = 0; 
+int num2 = 0; 
+Console.WriteLine("Enter number 1 :"); 
+num1 = Convert.ToInt32(Console.ReadLine()); 
+Console.WriteLine("Enter number 2 :"); 
+num2 = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine("Select an operator(+,-,*,/) :"); Console.WriteLine("\ta. Add"); 
+Console.WriteLine("\tb. Subtract"); 
+Console.WriteLine("\tc. Multiply"); 
+Console.WriteLine("\td. Divide"); 
+switch(Console.ReadLine()) 
+{ 
+case "a": 
+Console.WriteLine("Result is :" +(num1+num2)); break; 
+case "b": 
+Console.WriteLine("Result is :" + (num1 - num2)); break; 
+case "c": 
+Console.WriteLine("Result is :" + (num1 * num2)); break; 
+case "d": 
+Console.WriteLine("Result is :" + (num1 / num2)); break; 
+} 
+} 
+} 
+} 
+# =====================================================================
+#console prime number
+# =====================================================================
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int n, i;
+        bool prime = true;
+
+        Console.Write("Enter a number: ");
+        n = Convert.ToInt32(Console.ReadLine());
+
+        if (n <= 1)
+            prime = false;
+        else
+        {
+            for (i = 2; i <= Math.Sqrt(n); i++)
+            {
+                if (n % i == 0)
+                {
+                    prime = false;
+                    break;
+                }
+            }
+        }
+
+        if (prime)
+            Console.WriteLine("Prime Number");
+        else
+            Console.WriteLine("Not a Prime Number");
+
+        Console.ReadLine();
+    }
+}
+# =====================================================================
+#console fatorial
+# =====================================================================
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int n, i;
+        int fact = 1;
+
+        Console.Write("Enter a number: ");
+        n = Convert.ToInt32(Console.ReadLine());
+
+        for (i = 1; i <= n; i++)
+        {
+            fact = fact * i;
+        }
+
+        Console.WriteLine("Factorial = " + fact);
+        Console.ReadLine();
+    }
+}
+
+# =====================================================================
+#Form handling and model binding with client side and server side validation
+# =====================================================================
+Create an ASP.NET Core MVC project.
+Step 1 (Model): Right-click Models -> Add -> Class -> Name it Contact.cs.
+Step 2 (Controller): Right-click Controllers -> Add -> Controller -> MVC Controller - Empty -> Name it ContactController.cs.
+Step 3 (Views): Right-click Views -> Add -> New Folder named Contact.
+Right-click Views/Contact -> Add -> View -> Name it Index.cshtml.
+Right-click Views/Contact -> Add -> View -> Name it Thanks.cshtml.
+In Startup.cs, change {controller=Home} to {controller=Contact} at the bottom to make it the startup page.
+Code:
+1. Models/Contact.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace YourProjectName.Models
+
+{
+
+    public class Contact
+
+    {
+
+        [Required(ErrorMessage = "Name is required")]
+
+        public string Name { get; set; }
+
+        [Required, EmailAddress(ErrorMessage = "Invalid Email")]
+
+        public string Email { get; set; }
+
+        [Required, StringLength(500)]
+
+        public string Message { get; set; }
+
+    }
+
+}
+2. Controllers/ContactController.cs
+using Microsoft.AspNetCore.Mvc;
+
+using YourProjectName.Models;
+
+namespace YourProjectName.Controllers
+
+{
+
+    public class ContactController : Controller
+
+    {
+
+        [HttpGet]
+
+        public IActionResult Index() => View();
+
+        [HttpPost]
+
+        public IActionResult Index(Contact form)
+
+        {
+
+            if (ModelState.IsValid)
+
+                return RedirectToAction("Thanks");
+
+            return View(form);
+
+        }
+
+        public IActionResult Thanks() => View();
+
+    }
+
+}
+3. Views/Contact/Index.cshtml
+@model YourProjectName.Models.Contact
+
+<h2>Contact Us</h2>
+
+<form asp-action="Index" method="post">
+
+    <div>
+
+        Name: <input asp-for="Name" />
+
+        <span asp-validation-for="Name" style="color:red"></span>
+
+    </div>
+
+    <br />
+
+    <div>
+
+        Email: <input asp-for="Email" />
+
+        <span asp-validation-for="Email" style="color:red"></span>
+
+    </div>
+
+    <br />
+
+    <div>
+
+        Message: <textarea asp-for="Message"></textarea>
+
+        <span asp-validation-for="Message" style="color:red"></span>
+
+    </div>
+
+    <br />
+
+    <button type="submit">Submit</button>
+
+</form>
+
+4. Views/Contact/Thanks.cshtml
+<h1>Data submitted, Thank you!</h1>
+
+# =====================================================================
+# Layouts and Partial Views (Login Partial)
+# =====================================================================
+Create an ASP.NET Core Web Application (Model-View-Controller) project.
+Step 1 (Create Partial View): Right-click Views/Shared -> Add -> View -> Select Razor View - Empty -> Name it Login_partial.cshtml.
+Step 2 (Add to Layout): Open Views/Shared/_Layout.cshtml and add @await Html.PartialAsync("Login_partial") right below the closing </nav> tag (inside <header>).
+Step 3 (Create Login View): Right-click Views -> Add -> New Folder named Account. Right-click Views/Account -> Add -> View -> Name it Login.cshtml.
+Step 4 (Create Controller): Right-click Controllers -> Add -> Controller -> MVC Controller - Empty -> Name it AccountController.cs.
+Code:
+1. Views/Shared/Login_partial.cshtml
+@if (User.Identity.IsAuthenticated)
+
+{
+
+    <p>Welcome, @User.Identity.Name</p>
+
+    <form asp-controller="Account" asp-action="Logout" method="post">
+
+        <button type="submit">Logout</button>
+
+    </form>
+
+}
+
+else
+
+{
+
+    <a asp-controller="Account" asp-action="Login">Login</a>
+
+}
+2. Views/Shared/_Layout.cshtml
+(Add 1 line inside <header> right after </nav>)l	
+@await Html.PartialAsync("Login_partial")
+
+3. Views/Account/Login.cshtml
+
+```html
+
+<h2>Login</h2>
+
+<form asp-controller="Account" asp-action="Login" method="post">
+
+    Username: <input name="username" required /> <br /><br />
+
+    Password: <input name="password" type="password" required /> <br /><br />
+
+    <button type="submit">Login</button>
+
+</form>
+4. Controllers/AccountController.cs
+using Microsoft.AspNetCore.Mvc;
+
+namespace YourProjectName.Controllers
+
+{
+
+    public class AccountController : Controller
+
+    {
+
+        [HttpGet]
+
+        public IActionResult Login() => View();
+
+        [HttpPost]
+
+        public IActionResult Login(string username, string password)
+
+        {
+
+            if (username == "banana" && password == "ishika")
+
+                return RedirectToAction("Index", "Home");
+ 
+            return View();
+
+        }
+
+        [HttpPost]
+
+        public IActionResult Logout() => RedirectToAction("Index", "Home");
+
+    }
+
+}
+# =====================================================================
+# Session Data Usage
+# =====================================================================
+Create an ASP.NET Core MVC project.
+Step 1 (Startup.cs): Enable Session in ConfigureServices and Configure.
+Step 2 (HomeController.cs): Add methods to Set, Get, and Clear Session and TempData.
+Step 3 (Views/Home/): Create the corresponding .cshtml views Select Razor View - Empty  (SetSessionData, GetSessionData, SetTempData, GetTempData).
+Code:
+1. Startup.cs
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace prac8
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSession();
+            services.AddControllersWithViews();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+            app.UseSession();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
+}
+
+
+2. Controllers/HomeController.cs
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace YourProjectName.Controllers
+
+{
+
+    public class HomeController : Controller
+
+    {
+
+        public IActionResult Index() => View();
+
+        public IActionResult SetSessionData()
+
+        {
+
+            HttpContext.Session.SetString("Name", "Alex");
+
+            return View();
+
+        }
+
+        public IActionResult GetSessionData()
+
+        {
+
+            ViewBag.Msg = HttpContext.Session.GetString("Name") ?? "No Session Found";
+
+            return View();
+
+        }
+
+        public IActionResult ClearSession()
+
+        {
+
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("GetSessionData");
+
+        }
+
+        public IActionResult SetTempData()
+
+        {
+
+            TempData["Msg"] = "Temporary Message (Disappears on refresh!)";
+
+            return View();
+
+        }
+
+        public IActionResult GetTempData() => View();
+
+    }
+
+}
+
+
+3. Views inside Views/Home/
+Index.cshtml
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1>Session & TempData Demo</h1>
+
+    <a href="/Home/SetSessionData">1. Set Session</a>
+
+    <a href="/Home/GetSessionData">2. Get Session</a>
+
+    <a href="/Home/SetTempData">3. Set TempData</a>
+
+    <a href="/Home/GetTempData">4. Get TempData</a>
+
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+SetSessionData.cshtml<h2>Session Saved!</h2>
+
+<a href="/Home/GetSessionData">View Session</a>
+
+GetSessionData.cshtmll<h2>User: @ViewBag.Msg</h2>
+<a href="/Home/ClearSession">Clear Session</a>
+
+
+
+SetTempData.cshtml<h2>TempData Saved!</h2>
+
+<a href="/Home/GetTempData">View TempData</a>
+
+GetTempData.cshtml<h2>TempData: @TempData["Msg"]</h2>
+
+<p>Refresh the page to see it disappear!</p>
