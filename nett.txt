@@ -139,6 +139,106 @@ class Program
         Console.ReadLine();
     }
 }
+# =====================================================================
+#Introduction to ASP.NET Core (Empty Project & Razor Page)
+# =====================================================================
+Open Visual Studio -> Create a new project.
+Select ASP.NET Core Web Application -> Next.
+Name the project -> Select Empty template -> Click Create.
+In Solution Explorer (right side), right-click your project name -> Add -> New Item.
+Select Razor Page -> Click Add.
+Open Startup.cs to view the configuration and press F5 to run the projec
+# =====================================================================
+#Creating Razor Views  Passing Model Data to View (Product List MVC)
+# =====================================================================
+Create a new ASP.NET Core Web Application and select Web Application (Model-View-Controller).
+Create Model: Right-click the Models folder -> Add -> Class -> Name it Product.cs.
+Edit Controller: Open Controllers/HomeController.cs and update the Index() method to pass a list of products.
+Edit View: Open Views/Home/Index.cshtml and loop through the products using @foreach.
+Code:
+1. Models/Product.cs
+p
+namespace YourProjectName.Models
+{
+public class Product
+{
+public int Id { get; set; }
+public string Name { get; set; }
+public double Price { get; set; }
+}
+}
+
+### 2. Controllers/HomeController.cs
+
+```csharp
+
+using System.Collections.Generic;
+
+using Microsoft.AspNetCore.Mvc;
+
+using YourProjectName.Models;
+
+public class HomeController : Controller
+
+{
+
+    public IActionResult Index()
+
+    {
+
+        var list = new List<Product>
+
+        {
+
+            new Product { Id = 1, Name = "Chair 1", Price = 500 },
+
+            new Product { Id = 2, Name = "Chair 2", Price = 1000 }
+
+        };
+
+        return View(list);
+
+    }
+
+}
+3. Views/Home/Index.cshtml
+@model IEnumerable<YourProjectName.Models.Product>
+
+<h2>Product List</h2>
+
+@foreach (var item in Model)
+
+{
+
+    <div>
+
+        <h4>@item.Name (ID: @item.Id)</h4>
+
+        <p>Price: Rs. @item.Price</p>
+
+        <hr />
+
+    </div>
+
+}
+# =====================================================================
+#Strongly typed views with Model(Razor Views & Navigation in MVC)
+# =====================================================================
+Create an ASP.NET Core Web Application (Model-View-Controller).
+Right-click Views/Home folder -> Add -> View -> Select Razor View - Empty -> Name it Page1.cshtml.
+Repeat to add another view if needed (e.g., Page2.cshtml).
+Open Controllers/HomeController.cs and add action methods with the exact same names as your views:
+
+public IActionResult Page1()
+{
+return View();
+}
+
+5. Open `Views/Home/Index.cshtml` (or `Views/Shared/_Layout.cshtml`) and add a simple link:
+
+```html
+
+<a href="/Home/Page1">Go to Page 1</a>
 
 # =====================================================================
 #Form handling and model binding with client side and server side validation
